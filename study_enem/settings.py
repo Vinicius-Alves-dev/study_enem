@@ -77,8 +77,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'study_enem_db',
-        'USER': 'root',
-        'PASSWORD': '@MySQLVaop1212',
+        'USER': 'admin_enem',
+        'PASSWORD': '@MySQLvaop1212',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -125,3 +125,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATIC_ROOT = BASE_DIR / 'staticfiles' #para o django saber exatamente em qual
+#pasta o meu computador reune os arquivos estático

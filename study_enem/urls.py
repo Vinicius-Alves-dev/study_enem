@@ -19,5 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('usuarios.urls')), #isso tá dizendo que todas as rotas de login/cadastro começarão com /auth/
+    path('usuarios/', include('usuarios.urls')), #isso tá dizendo que todas as rotas de login/cadastro começarão com /auth/
 ]
