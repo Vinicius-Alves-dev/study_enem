@@ -1,0 +1,16 @@
+# Ambiente virtual
+venv/
+env/
+ENV/
+
+# Arquivos do Python/Django
+*.pyc
+__pycache__/
+db.sqlite3
+media/
+staticfiles/
+
+# Arquivos do VS Code / Sistema
+.vscode/
+.DS_Store
+Thumbs.db
