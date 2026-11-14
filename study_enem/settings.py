@@ -107,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'UTC'
 
@@ -128,3 +128,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles' #para o django saber exatamente em qual
 #pasta o meu computador reune os arquivos estático
+
+# Configurações reais de E-mail (Gmail)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'bjalexalves@gmail.com'          # Coloque o seu e-mail do Gmail aqui
+EMAIL_HOST_PASSWORD = 'leqa yicz rcxq wmec' # Cole aqui aquela senha de app de 16 letras gerada no Google
+DEFAULT_FROM_EMAIL = 'Study ENEM <seu_email@gmail.com>'
