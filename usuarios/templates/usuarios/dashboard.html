@@ -5,62 +5,163 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study ENEM - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'usuarios/dashboard.css' %}">
+    <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
 </head>
 <body>
-    <!-- Barra superior -->
-     <header class="dashboard-navbar">
-        <a href="#" class="dashboard-brand">Study ENEM</a>
-        <div class="user-info">
-            <span>Olá, <strong>{{ user.username }}</strong></span>
-            <a href="{% url 'logout' %}" class="btn-logout">Sair</a>    
+<div class="layout">
+
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo">SE</div>
+            <div>
+                <strong>Study ENEM</strong>
+                <span>Plataforma de Estudos</span>
+            </div>
         </div>
-     </header>
 
-    <!-- Conteúdo principal -->
-     <main class="dashboard-container">
-        <section class="dashboard-welcome">
-            <h1>Painel de Estudos</h1>
-            <p>Escolha uma das opções abaixo para começar sua preparação rumo à aprovação.</p>
-        </section>
+        <nav class="sidebar-nav">
+            <p class="nav-title">Menu principal</p>
+            <a href="{% url 'dashboard' %}" class="nav-link active"><i data-lucide="layout-grid"></i> Dashboard</a>
+            <a href="#" class="nav-link"><i data-lucide="book-open"></i> Disciplinas e Aulas</a>
+            <a href="#" class="nav-link"><i data-lucide="file-pen-line"></i> Corretor de Redação IA <span class="badge">IA</span></a>
+            <a href="#" class="nav-link"><i data-lucide="circle-help"></i> Central de Dúvidas IA</a>
+            <a href="#" class="nav-link"><i data-lucide="layers"></i> Flashcards</a>
+            <a href="#" class="nav-link"><i data-lucide="history"></i> Histórico e Evolução</a>
+        </nav>
 
-        <!-- Cards de Funcionalidade-->
-         <div class="dashboard-grid">
-            <!-- Card Redação -->
-             <div class="dashboard-card">
+        <div class="sidebar-footer">
+            <div class="user-card">
+                <div class="avatar">{{ iniciais }}</div>
                 <div>
-                    <h3>Correção de Redação</h3>
-                    <p>Envie sua redação dissertativa-argumentativa e receba uma análise detalhada baseada nas 5 competências do ENEM usando IA.</p>
+                    <strong>{{ user.get_full_name|default:user.username }}</strong>
+                    <span>Foco: ENEM {{ ano_foco }}</span>
                 </div>
-                <a href="#" class="card-btn">Acessar Redação</a>
-             </div>
-
-             <!-- Card Questões -->
-              <div class="dashboard-card">
-                <div>
-                    <h3>Banco de Questões</h3>
-                    <p>Pratique com questões focadas do ENEM e teste seus conhecimentos por matéria.</p>
-                </div>
-                <a href="#" class="card-btn">Acessar Questões</a>
-              </div>
-              <!-- Card Questões -->
-            <div class="dashboard-card">
-                <div>
-                    <h3>Banco de Questões</h3>
-                    <p>Pratique com questões focadas no formato do ENEM e teste seus conhecimentos por matéria.</p>
-                </div>
-                <a href="#" class="card-btn">Resolver Questões</a>
             </div>
+            <a href="{% url 'logout' %}" class="btn-logout"><i data-lucide="log-out"></i> Sair da Conta</a>
+        </div>
+    </aside>
 
-            <!-- Card Progresso -->
-            <div class="dashboard-card">
-                <div>
-                    <h3>Meu Progresso</h3>
-                    <p>Acompanhe seu histórico de estudos, desempenho nas redações e evolução semanal.</p>
+    <!-- ========== CONTEÚDO ========== -->
+    <div class="main">
+        <header class="topbar">
+            <h2>Painel Principal</h2>
+   
+        </header>
+
+        <main class="content">
+
+            <!-- Hero -->
+            <section class="hero">
+                <div class="hero-text">
+                    <span class="hero-tag"><i data-lucide="sparkles"></i> Seu ambiente integrado de preparação</span>
+                    <h1>Olá, {{ user.first_name|default:user.username }}! Pronto(a) para estudar hoje?</h1>
+                    <p>Continue de onde parou: assista videoaulas organizadas por assunto, revise seus flashcards ou envie uma redação para correção imediata com IA.</p>
                 </div>
-                <a href="#" class="card-btn">Ver Estatísticas</a>
-            </div>
-         </div>
-     </main>
+                <div class="hero-actions">
+                    <a href="#" class="btn btn-light"><i data-lucide="file-pen-line"></i> Nova Redação</a>
+                    <a href="#" class="btn btn-ghost"><i data-lucide="circle-play"></i> Explorar Conteúdos</a>
+                </div>
+            </section>
+
+            <!-- Estatísticas -->
+            <section class="stats">
+                <div class="stat">
+                    <div class="stat-icon indigo"><i data-lucide="file-text"></i></div>
+                    <div><span class="stat-label">Redações feitas</span><strong>{{ total_redacoes }}</strong></div>
+                </div>
+                <div class="stat">
+                    <div class="stat-icon green"><i data-lucide="award"></i></div>
+                    <div><span class="stat-label">Última nota estimada</span>
+                        <strong>{{ ultima_nota|default:"—" }}{% if ultima_nota %} <small>/ 1000</small>{% endif %}</strong></div>
+                </div>
+                <div class="stat">
+                    <div class="stat-icon amber"><i data-lucide="layers"></i></div>
+                    <div><span class="stat-label">Flashcards hoje</span><strong>{{ flashcards_hoje }}</strong></div>
+                </div>
+                <div class="stat">
+                    <div class="stat-icon blue"><i data-lucide="message-square-text"></i></div>
+                    <div><span class="stat-label">Dúvidas respondidas</span><strong>{{ duvidas_respondidas }}</strong></div>
+                </div>
+            </section>
+
+            <!-- Áreas do conhecimento -->
+            <section class="section-head">
+                <div>
+                    <h3>As 4 Áreas do Conhecimento do ENEM</h3>
+                    <p>Selecione uma área para navegar pelas disciplinas, assuntos e videoaulas</p>
+                </div>
+                <a href="#" class="link-more">Ver todas <i data-lucide="chevron-right"></i></a>
+            </section>
+
+            <section class="areas">
+                {% for area in areas %}
+                <a href="{{ area.url }}" class="area-card">
+                    <div class="area-icon {{ area.cor }}"><i data-lucide="{{ area.icone }}"></i></div>
+                    <div>
+                        <h4>{{ area.nome }}</h4>
+                        <p>{{ area.descricao }}</p>
+                    </div>
+                    <i data-lucide="arrow-up-right" class="area-arrow"></i>
+                </a>
+                {% endfor %}
+            </section>
+
+            <!-- Ferramentas + Evolução -->
+            <section class="bottom">
+                <div class="panel">
+                    <h3>Ferramentas de Apoio</h3>
+                    <p class="panel-sub">Recursos individualizados integrados à sua conta</p>
+
+                    <a href="#" class="tool tool-indigo">
+                        <div class="tool-icon"><i data-lucide="file-check-2"></i></div>
+                        <div><strong>Corretor de Redação IA</strong><span>Avaliação nas 5 competências</span></div>
+                        <i data-lucide="chevron-right"></i>
+                    </a>
+                    <a href="#" class="tool tool-blue">
+                        <div class="tool-icon"><i data-lucide="circle-help"></i></div>
+                        <div><strong>Central de Dúvidas</strong><span>Explicações didáticas passo a passo</span></div>
+                        <i data-lucide="chevron-right"></i>
+                    </a>
+                    <a href="#" class="tool tool-amber">
+                        <div class="tool-icon"><i data-lucide="layers"></i></div>
+                        <div><strong>Praticar Flashcards</strong><span>Revisão ativa de conceitos-chave</span></div>
+                        <i data-lucide="chevron-right"></i>
+                    </a>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <h3>Evolução Recente nas Redações</h3>
+                            <p class="panel-sub">Histórico individual armazenado no MySQL</p>
+                        </div>
+                        <a href="#" class="link-small">Ver histórico completo</a>
+                    </div>
+
+                    {% for r in redacoes_recentes %}
+                    <div class="essay">
+                        <div>
+                            <time>{{ r.criada_em|date:"d/m/Y" }}</time>
+                            <strong>{{ r.tema }}</strong>
+                        </div>
+                        <span class="score {% if r.nota >= 800 %}score-high{% else %}score-mid{% endif %}">{{ r.nota }} pts</span>
+                    </div>
+                    {% empty %}
+                    <p class="empty">Você ainda não enviou nenhuma redação. Clique em “Nova Redação” para começar.</p>
+                    {% endfor %}
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+</script>
 </body>
 </html>

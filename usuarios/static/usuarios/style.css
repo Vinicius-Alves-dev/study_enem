@@ -1,14 +1,14 @@
 /* Study ENEM — telas de login e cadastro
    Para trocar as cores, mude só as variáveis abaixo. */
 :root{
-  --ink:#0A2A31;
-  --teal:#12525C;
-  --teal-deep:#0D3F48;
+  --ink:#1E1B4B;
+  --teal:#5B3CC4;
+  --teal-deep:#3F2A8F;
   --gold:#F2B84B;
-  --paper:#F3F6F5;
-  --line:#D9E3E1;
-  --text:#13262B;
-  --muted:#5B7176;
+  --paper:#F5F3FF;
+  --line:#E2DDF5;
+  --text:#1B1533;
+  --muted:#6B6485;
   --danger:#B3261E;
   --font-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
   --font-body:"Figtree","Segoe UI",system-ui,sans-serif;

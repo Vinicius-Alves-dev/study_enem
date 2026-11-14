@@ -1,3 +1,5 @@
+from urllib import request
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
@@ -39,5 +41,38 @@ def logout_view(request):
     return redirect('login')
 
 @login_required
+@login_required
 def dashboard_view(request):
-    return render(request, 'usuarios/dashboard.html')
+    user = request.user
+    nome = user.get_full_name() or user.username
+    partes = nome.split()
+    iniciais = (partes[0][0] + (partes[-1][0] if len(partes) > 1 else "")).upper()
+
+    context = {
+        "iniciais": iniciais,
+        "ano_foco": 2026,
+        "ia_ativa": True,
+        "total_redacoes": 0,
+        "ultima_nota": None,
+        "flashcards_hoje": 0,
+        "duvidas_respondidas": 0,
+        "redacoes_recentes": [],
+        "areas": AREAS,
+    }
+    return render(request, 'usuarios/dashboard.html', context)
+
+AREAS = [
+    {"nome": "Linguagens, Códigos e suas Tecnologias",
+     "descricao": "Língua Portuguesa, Literatura, Língua Estrangeira, Interpretação e Coesão Textual.",
+     "icone": "languages", "cor": "red", "url": "#"},
+    {"nome": "Ciências Humanas e suas Tecnologias",
+     "descricao": "História do Brasil e Geral, Geografia, Filosofia e Sociologia.",
+     "icone": "globe", "cor": "amber", "url": "#"},
+    {"nome": "Ciências da Natureza e suas Tecnologias",
+     "descricao": "Biologia (Ecologia, Genética, Citologia), Física e Química.",
+     "icone": "microscope", "cor": "green", "url": "#"},
+    {"nome": "Matemática e suas Tecnologias",
+     "descricao": "Funções, Porcentagem, Geometria Plana e Espacial, Estatística e Probabilidade.",
+     "icone": "calculator", "cor": "blue", "url": "#"},
+]
+
