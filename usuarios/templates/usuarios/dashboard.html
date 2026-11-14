@@ -1,12 +1,66 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENEM - Dashboard</title>
+    <title>Study ENEM - Dashboard</title>
+    <link rel="stylesheet" href="{% static 'usuarios/dashboard.css' %}">
 </head>
 <body>
-    <h1>Bem-vindo ao Study ENEM, {{ user.username }}!</h1>
-    <a href="{% url 'logout' %}">Sair</a>
+    <!-- Barra superior -->
+     <header class="dashboard-navbar">
+        <a href="#" class="dashboard-brand">Study ENEM</a>
+        <div class="user-info">
+            <span>Olá, <strong>{{ user.username }}</strong></span>
+            <a href="{% url 'logout' %}" class="btn-logout">Sair</a>    
+        </div>
+     </header>
+
+    <!-- Conteúdo principal -->
+     <main class="dashboard-container">
+        <section class="dashboard-welcome">
+            <h1>Painel de Estudos</h1>
+            <p>Escolha uma das opções abaixo para começar sua preparação rumo à aprovação.</p>
+        </section>
+
+        <!-- Cards de Funcionalidade-->
+         <div class="dashboard-grid">
+            <!-- Card Redação -->
+             <div class="dashboard-card">
+                <div>
+                    <h3>Correção de Redação</h3>
+                    <p>Envie sua redação dissertativa-argumentativa e receba uma análise detalhada baseada nas 5 competências do ENEM usando IA.</p>
+                </div>
+                <a href="#" class="card-btn">Acessar Redação</a>
+             </div>
+
+             <!-- Card Questões -->
+              <div class="dashboard-card">
+                <div>
+                    <h3>Banco de Questões</h3>
+                    <p>Pratique com questões focadas do ENEM e teste seus conhecimentos por matéria.</p>
+                </div>
+                <a href="#" class="card-btn">Acessar Questões</a>
+              </div>
+              <!-- Card Questões -->
+            <div class="dashboard-card">
+                <div>
+                    <h3>Banco de Questões</h3>
+                    <p>Pratique com questões focadas no formato do ENEM e teste seus conhecimentos por matéria.</p>
+                </div>
+                <a href="#" class="card-btn">Resolver Questões</a>
+            </div>
+
+            <!-- Card Progresso -->
+            <div class="dashboard-card">
+                <div>
+                    <h3>Meu Progresso</h3>
+                    <p>Acompanhe seu histórico de estudos, desempenho nas redações e evolução semanal.</p>
+                </div>
+                <a href="#" class="card-btn">Ver Estatísticas</a>
+            </div>
+         </div>
+     </main>
 </body>
 </html>

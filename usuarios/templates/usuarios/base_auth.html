@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Study ENEM{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'usuarios/style.css' %}">
+</head>
+<body>
+<main class="auth-shell">
+
+    <aside class="auth-panel">
+        <div class="brand">
+            <div class="brand-mark">SE</div>
+            <div class="brand-name">Study ENEM</div>
+        </div>
+
+        <h2 class="panel-title">Estude com método, escreva com confiança.</h2>
+        <p class="panel-lead">Organize seus estudos, assista às videoaulas, revise com flashcards e treine sua redação em um só lugar.</p>
+
+        <ul class="feature-list">
+            <li>
+                <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/></svg></span>
+                <div><strong>4 áreas do conhecimento</strong><span>Aulas e conteúdos organizados por disciplina e assunto.</span></div>
+            </li>
+            <li>
+                <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/><path d="M14 3v5h5"/><path d="m9 15 2 2 4-4"/></svg></span>
+                <div><strong>Correção de redação</strong><span>Avaliação detalhada nas 5 competências do ENEM.</span></div>
+            </li>
+            <li>
+                <span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 6V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-3"/></svg></span>
+                <div><strong>Dúvidas e flashcards</strong><span>Apoio individual e revisão para fixar o conteúdo.</span></div>
+            </li>
+        </ul>
+
+        <div class="panel-foot"><i></i> Gratuito · Projeto acadêmico Senac</div>
+    </aside>
+
+    <section class="auth-form-side">
+        <nav class="tabs" aria-label="Acesso">
+            <a href="{% url 'login' %}" {% if request.resolver_match.url_name == 'login' %}aria-current="page"{% endif %}>Entrar</a>
+            <a href="{% url 'cadastro' %}" {% if request.resolver_match.url_name == 'cadastro' %}aria-current="page"{% endif %}>Criar conta</a>
+        </nav>
+
+        {% block content %}{% endblock %}
+
+        <p class="privacy">Seus dados seguem a LGPD. Cada estudante vê apenas os próprios registros.</p>
+    </section>
+</main>
+
+<script>
+    // Botão de mostrar/ocultar senha em todo campo de senha
+    var eye = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>';
+    document.querySelectorAll('.auth-form input[type=password]').forEach(function (input) {
+        var wrap = document.createElement('div');
+        wrap.className = 'input-wrap has-toggle';
+        input.parentNode.insertBefore(wrap, input);
+        wrap.appendChild(input);
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'toggle-pass';
+        btn.setAttribute('aria-label', 'Mostrar senha');
+        btn.innerHTML = eye;
+        btn.addEventListener('click', function () {
+            var show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            btn.setAttribute('aria-label', show ? 'Ocultar senha' : 'Mostrar senha');
+        });
+        wrap.appendChild(btn);
+    });
+</script>
+</body>
+</html>
