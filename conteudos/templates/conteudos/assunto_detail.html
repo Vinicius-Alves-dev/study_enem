@@ -1,0 +1,94 @@
+{% extends "conteudos/base_app.html" %}
+{% block title %}{{ assunto.nome }} - Study ENEM{% endblock %}
+
+{% block content %}
+<nav class="crumbs">
+    <div class="crumbs-trail">
+        <a href="{% url 'conteudos:areas' %}"><i data-lucide="layout-grid"></i> Áreas do Conhecimento</a>
+        <i data-lucide="chevron-right" class="sep"></i>
+        <a href="{% url 'conteudos:area' area.slug %}">{{ area.nome_curto }}</a>
+        <i data-lucide="chevron-right" class="sep"></i>
+        <a href="{% url 'conteudos:disciplina' area.slug disciplina.slug %}">{{ disciplina.nome }}</a>
+        <i data-lucide="chevron-right" class="sep"></i>
+        <strong class="current">{{ assunto.nome }}</strong>
+    </div>
+    <a href="{% url 'conteudos:disciplina' area.slug disciplina.slug %}" class="btn-back"><i data-lucide="arrow-left"></i> Voltar nível</a>
+</nav>
+
+<header class="subject-head tone-{{ area.cor }}">
+    <div class="tags">
+        <span class="tag tag-tone">{{ area.nome_curto }}</span>
+        <span class="tag">{{ disciplina.nome }}</span>
+        <span class="tag tag-accent">{{ assunto.nome }}</span>
+    </div>
+    <h1>{{ assunto.nome }} — {{ disciplina.nome }}</h1>
+    {% if assunto.descricao %}<p>{{ assunto.descricao }}</p>{% endif %}
+</header>
+
+{% if aula_atual %}
+<section class="lesson-layout">
+    <article class="player-card">
+        {% if aula_atual.youtube_id %}
+        <!-- Capa estática do vídeo: o vídeo roda na página do autor, não aqui -->
+        <a href="{{ aula_atual.youtube_watch_url }}" target="_blank" rel="noopener noreferrer" class="player"
+           aria-label="Assistir no YouTube (abre em nova aba)">
+                <img src="{{ aula_atual.thumbnail_url }}" alt="Capa da videoaula: {{ aula_atual.titulo }}"
+                     onload="if(this.naturalWidth<=200){this.onload=null;this.src='{{ aula_atual.thumbnail_fallback_url }}';}"
+                     onerror="this.onerror=null;this.src='{{ aula_atual.thumbnail_fallback_url }}';">
+            <span class="thumb-play"><i data-lucide="play"></i></span>
+        </a>
+        {% else %}
+        <div class="player"><p class="player-fallback">O link do YouTube desta aula é inválido. Corrija no painel de administração.</p></div>
+        {% endif %}
+
+        <div class="player-info">
+            <span class="eyebrow">Videoaula</span>
+            <h2>Aula {{ posicao }}: {{ aula_atual.titulo }}{% if aula_atual.canal %} - {{ aula_atual.canal }}{% endif %}</h2>
+            {% if aula_atual.descricao %}<p>{{ aula_atual.descricao }}</p>{% endif %}
+
+            {% if aula_atual.youtube_id %}
+            <a href="{{ aula_atual.youtube_watch_url }}" target="_blank" rel="noopener noreferrer" class="btn-youtube">
+                <i data-lucide="external-link"></i>
+                <span>ASSISTIR NO YOUTUBE <small>(Abre em nova aba ↗)</small></span>
+            </a>
+            {% endif %}
+
+            <p class="source">
+                Fonte: {{ aula_atual.canal|default:"YouTube" }}{% if aula_atual.canal %} (Canal Oficial){% endif %}<br>
+                Créditos: videoaula de autoria de {{ aula_atual.canal|default:"seu autor" }}. Todos os direitos pertencem ao autor; o vídeo é exibido apenas no YouTube original.
+            </p>
+
+            <form method="post" action="{% url 'conteudos:concluir' aula_atual.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-done {% if aula_concluida %}is-done{% endif %}">
+                    {% if aula_concluida %}
+                    <i data-lucide="square-check-big"></i> AULA ASSISTIDA <small>(clique para desmarcar)</small>
+                    {% else %}
+                    <i data-lucide="square"></i> MARCAR COMO ASSISTIDA
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+    </article>
+
+    <aside class="playlist">
+        <h3><i data-lucide="circle-play"></i> Videoaulas deste assunto</h3>
+        {% for a in aulas %}
+        <a href="?aula={{ a.id }}" class="lesson {% if a.id == aula_atual.id %}is-active{% endif %}">
+            <span class="lesson-play">{% if a.id in concluidas %}<i data-lucide="check"></i>{% else %}<i data-lucide="play"></i>{% endif %}</span>
+            <span class="lesson-text">
+                <strong>{{ forloop.counter }}. {{ a.titulo }}</strong>
+                <small>Videoaula{% if a.duracao_min %} • {{ a.duracao_min }} min{% endif %}{% if a.id in concluidas %} • assistida{% endif %}</small>
+            </span>
+            {% if a.id == aula_atual.id %}<span class="now">Assistindo</span>{% endif %}
+        </a>
+        {% endfor %}
+    </aside>
+</section>
+{% else %}
+<p class="empty-box">
+    Ainda não há videoaulas para este assunto.
+    {% if user.is_staff %}<a href="{% url 'admin:conteudos_assunto_change' assunto.id %}">Adicionar pelo painel de administração</a>.{% endif %}
+</p>
+{% endif %}
+{% endblock %}

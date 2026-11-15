@@ -1,0 +1,62 @@
+{% extends "conteudos/base_app.html" %}
+{% block title %}{{ disciplina.nome }} - Study ENEM{% endblock %}
+
+{% block content %}
+<nav class="crumbs">
+    <div class="crumbs-trail">
+        <a href="{% url 'conteudos:areas' %}"><i data-lucide="layout-grid"></i> Áreas do Conhecimento</a>
+        <i data-lucide="chevron-right" class="sep"></i>
+        <a href="{% url 'conteudos:area' area.slug %}">{{ area.nome_curto }}</a>
+        <i data-lucide="chevron-right" class="sep"></i>
+        <strong>{{ disciplina.nome }}</strong>
+    </div>
+    <a href="{% url 'conteudos:area' area.slug %}" class="btn-back"><i data-lucide="arrow-left"></i> Voltar nível</a>
+</nav>
+
+<header class="area-head tone-{{ area.cor }}">
+    <div class="cat-icon big"><i data-lucide="{{ disciplina.icone }}"></i></div>
+    <div>
+        <span class="eyebrow">Todos os assuntos de</span>
+        <h1>{{ disciplina.nome }}</h1>
+        {% if disciplina.descricao %}<p class="head-desc">{{ disciplina.descricao }}</p>{% endif %}
+    </div>
+    <span class="pill pill-lg">{{ assuntos|length }} assunto{{ assuntos|length|pluralize }}</span>
+</header>
+
+<div class="search-box">
+    <i data-lucide="search"></i>
+    <input type="search" id="busca" placeholder="Buscar assunto de {{ disciplina.nome }}..." autocomplete="off">
+</div>
+
+<section class="topic-grid tone-{{ area.cor }}" id="lista-assuntos">
+    {% for a in assuntos %}
+    <a href="{% url 'conteudos:assunto' area.slug disciplina.slug a.slug %}" class="topic" data-nome="{{ a.nome|lower }}">
+        <span class="topic-num">{{ forloop.counter }}</span>
+        <span class="topic-name">{{ a.nome }}</span>
+        <span class="topic-meta">{% if a.n_aulas %}{{ a.n_aulas }} aula{{ a.n_aulas|pluralize }}{% else %}em breve{% endif %}</span>
+        <i data-lucide="chevron-right"></i>
+    </a>
+    {% empty %}
+    <p class="empty-box">Nenhum assunto cadastrado nesta disciplina.</p>
+    {% endfor %}
+</section>
+<p class="empty-box" id="sem-resultado" hidden>Nenhum assunto encontrado para essa busca.</p>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const campo = document.getElementById('busca');
+    const itens = document.querySelectorAll('#lista-assuntos .topic');
+    const aviso = document.getElementById('sem-resultado');
+    campo.addEventListener('input', () => {
+        const termo = campo.value.trim().toLowerCase();
+        let visiveis = 0;
+        itens.forEach(el => {
+            const mostra = el.dataset.nome.includes(termo);
+            el.hidden = !mostra;
+            if (mostra) visiveis++;
+        });
+        aviso.hidden = visiveis > 0;
+    });
+</script>
+{% endblock %}

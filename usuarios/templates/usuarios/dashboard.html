@@ -27,7 +27,7 @@
         <nav class="sidebar-nav">
             <p class="nav-title">Menu principal</p>
             <a href="{% url 'dashboard' %}" class="nav-link active"><i data-lucide="layout-grid"></i> Dashboard</a>
-            <a href="#" class="nav-link"><i data-lucide="book-open"></i> Disciplinas e Aulas</a>
+            <a href="{% url 'conteudos:areas' %}" class="nav-link"><i data-lucide="book-open"></i> Disciplinas e Aulas</a>
             <a href="#" class="nav-link"><i data-lucide="file-pen-line"></i> Corretor de Redação IA <span class="badge">IA</span></a>
             <a href="#" class="nav-link"><i data-lucide="circle-help"></i> Central de Dúvidas IA</a>
             <a href="#" class="nav-link"><i data-lucide="layers"></i> Flashcards</a>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="hero-actions">
                     <a href="#" class="btn btn-light"><i data-lucide="file-pen-line"></i> Nova Redação</a>
-                    <a href="#" class="btn btn-ghost"><i data-lucide="circle-play"></i> Explorar Conteúdos</a>
+                    <a href="{% url 'conteudos:areas' %}" class="btn btn-ghost"><i data-lucide="circle-play"></i> Explorar Conteúdos</a>
                 </div>
             </section>
 
@@ -95,7 +95,7 @@
                     <h3>As 4 Áreas do Conhecimento do ENEM</h3>
                     <p>Selecione uma área para navegar pelas disciplinas, assuntos e videoaulas</p>
                 </div>
-                <a href="#" class="link-more">Ver todas <i data-lucide="chevron-right"></i></a>
+                <a href="{% url 'conteudos:areas' %}" class="link-more">Ver todas <i data-lucide="chevron-right"></i></a>
             </section>
 
             <section class="areas">

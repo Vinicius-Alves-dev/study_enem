@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Study ENEM{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'usuarios/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'conteudos/disciplinas.css' %}">
+    <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
+</head>
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo">SE</div>
+            <div><strong>Study ENEM</strong><span>Plataforma de Estudos</span></div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <p class="nav-title">Menu principal</p>
+            <a href="{% url 'dashboard' %}" class="nav-link"><i data-lucide="layout-grid"></i> Dashboard</a>
+            <a href="{% url 'conteudos:areas' %}" class="nav-link active"><i data-lucide="book-open"></i> Disciplinas e Aulas</a>
+            <a href="#" class="nav-link"><i data-lucide="file-pen-line"></i> Corretor de Redação IA <span class="badge">IA</span></a>
+            <a href="#" class="nav-link"><i data-lucide="circle-help"></i> Central de Dúvidas IA</a>
+            <a href="#" class="nav-link"><i data-lucide="layers"></i> Flashcards</a>
+            <a href="#" class="nav-link"><i data-lucide="history"></i> Histórico e Evolução</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-card">
+                <div class="avatar">{% if user.first_name %}{{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1" }}{% else %}{{ user.username|slice:":1"|upper }}{% endif %}</div>
+                <div>
+                    <strong>{{ user.get_full_name|default:user.username }}</strong>
+                    <span>Foco: ENEM 2026</span>
+                </div>
+            </div>
+            <a href="{% url 'logout' %}" class="btn-logout"><i data-lucide="log-out"></i> Sair da Conta</a>
+        </div>
+    </aside>
+
+    <div class="main">
+        <header class="topbar">
+            <h2>{% block page_title %}Disciplinas, Assuntos e Videoaulas{% endblock %}</h2>
+        </header>
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</div>
+<script>document.addEventListener('DOMContentLoaded', () => lucide.createIcons());</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

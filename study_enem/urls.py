@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('usuarios/', include('usuarios.urls')), #isso tá dizendo que todas as rotas de login/cadastro começarão com /auth/
     path('', RedirectView.as_view(pattern_name='login', permanent=False)),
+    path('conteudos/', include('conteudos.urls')),
 ]

@@ -1,0 +1,32 @@
+{% extends "conteudos/base_app.html" %}
+{% block title %}Study ENEM - Disciplinas e Aulas{% endblock %}
+
+{% block content %}
+<nav class="crumbs">
+    <div class="crumbs-trail"><strong><i data-lucide="layout-grid"></i> Áreas do Conhecimento</strong></div>
+</nav>
+
+<header class="page-head">
+    <h1>Áreas do Conhecimento do ENEM</h1>
+    <p>Escolha uma das quatro grandes áreas para explorar suas disciplinas e assuntos.</p>
+</header>
+
+<section class="cat-grid cols-2">
+    {% for area in areas %}
+    <a href="{% url 'conteudos:area' area.slug %}" class="cat-card tone-{{ area.cor }}">
+        <div class="cat-top">
+            <div class="cat-icon"><i data-lucide="{{ area.icone }}"></i></div>
+            <span class="pill">Área {{ forloop.counter|stringformat:"02d" }}</span>
+        </div>
+        <h3>{{ area.nome }}</h3>
+        <p>{{ area.descricao }}</p>
+        <div class="cat-foot">
+            <span class="meta"><i data-lucide="book-open"></i> {{ area.n_disc }} disciplina{{ area.n_disc|pluralize }} <b>•</b> {{ area.n_ass }} assunto{{ area.n_ass|pluralize }}</span>
+            <span class="cat-go">Explorar <i data-lucide="arrow-right"></i></span>
+        </div>
+    </a>
+    {% empty %}
+    <p class="empty-box">Nenhuma área cadastrada ainda. Rode <code>python manage.py popular_conteudos</code> no terminal.</p>
+    {% endfor %}
+</section>
+{% endblock %}

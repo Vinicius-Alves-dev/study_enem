@@ -1,0 +1,41 @@
+{% extends "conteudos/base_app.html" %}
+{% block title %}{{ area.nome_curto }} - Study ENEM{% endblock %}
+
+{% block content %}
+<nav class="crumbs">
+    <div class="crumbs-trail">
+        <a href="{% url 'conteudos:areas' %}"><i data-lucide="layout-grid"></i> Áreas do Conhecimento</a>
+        <i data-lucide="chevron-right" class="sep"></i>
+        <strong>{{ area.nome_curto }}</strong>
+    </div>
+    <a href="{% url 'conteudos:areas' %}" class="btn-back"><i data-lucide="arrow-left"></i> Voltar nível</a>
+</nav>
+
+<header class="area-head tone-{{ area.cor }}">
+    <div class="cat-icon big"><i data-lucide="{{ area.icone }}"></i></div>
+    <div>
+        <span class="eyebrow">Disciplinas da área</span>
+        <h1>{{ area.nome }}</h1>
+    </div>
+    <span class="pill pill-lg">{{ disciplinas|length }} disciplina{{ disciplinas|length|pluralize }} disponíve{{ disciplinas|length|pluralize:"l,is" }}</span>
+</header>
+
+<section class="cat-grid cols-3">
+    {% for d in disciplinas %}
+    <a href="{% url 'conteudos:disciplina' area.slug d.slug %}" class="cat-card tone-{{ area.cor }}">
+        <div class="cat-top">
+            <div class="cat-icon"><i data-lucide="{{ d.icone }}"></i></div>
+            <span class="pill">{{ d.n_ass }} assunto{{ d.n_ass|pluralize }}</span>
+        </div>
+        <h3>{{ d.nome }}</h3>
+        <p>{{ d.descricao }}</p>
+        <div class="cat-foot">
+            <span class="meta">{{ d.n_aulas }} videoaula{{ d.n_aulas|pluralize }} organizada{{ d.n_aulas|pluralize }}</span>
+            <span class="cat-go small">Ver assuntos <i data-lucide="arrow-right"></i></span>
+        </div>
+    </a>
+    {% empty %}
+    <p class="empty-box">Nenhuma disciplina cadastrada nesta área.</p>
+    {% endfor %}
+</section>
+{% endblock %}
